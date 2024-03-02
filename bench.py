@@ -39,6 +39,20 @@ def bench(N = 1*1000*1000):
 
         return torch.tensor(ret)
 
+    from microdict import mdict
+    my_mdict = mdict.create("i64:i64")
+    for i, j, in zip(k, v):
+        my_mdict[i] = j
+
+    def mdict_map():
+        ret = []
+        for i in k:
+            if i in my_mdict:
+                ret.append(my_mdict[i])
+            else:
+                ret.append(-1)
+
+        return torch.tensor(ret)
 
     my_torch_map = TorchMap(k_tensor, v_tensor)
 
@@ -52,7 +66,7 @@ def bench(N = 1*1000*1000):
 
     number_times = math.ceil(1e6/N)
     print(f'N = {N} running bench for {number_times} times')
-    for func in [py_map, np_map, torch_map]:
+    for func in [py_map, np_map, mdict_map, torch_map]:
         dt = timeit.timeit(func, number=number_times) / number_times
         print(f'{func=}, {dt=:.2f}s, {N/dt/1e6:.2f} M lookups/s')
 
