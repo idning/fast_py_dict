@@ -1,5 +1,6 @@
-# fast_py_dict: A 50-100x Faster Read Only Dict for Python
+# fast_py_dict: A Faster Read Only Dict for Python
 
+Get fast by leverage multi-gpu cores, in a 96 core system:
 
     $ python bench.py
     N = 1000 running bench for 1000 times
